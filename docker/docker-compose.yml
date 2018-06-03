@@ -1,0 +1,93 @@
+version: '2'
+services:
+   nginx:
+     container_name: nginx
+     image: nginx:1.14.0-alpine
+     ports:
+         - 80:80
+         - 443:443
+     volumes:
+         - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+
+   smtp:
+     container_name: smtp
+     build: ./smtp
+     ports:
+         - 25:25        
+     environment:
+       GMAIL_USER:
+       GMAIL_PASSWORD:
+       SES_USER:
+       SES_PASSWORD:
+       SES_REGION:
+       RELAY_NETWORKS:
+       RELAY_DOMAINS:
+       KEY_PATH:
+       CERTIFICATE_PATH:
+       MAILNAME:  
+     networks:
+       vpcbr:
+          ipv4_address: 10.5.0.2
+
+   jenkins:
+     container_name: jenkins
+     build: jenkins/
+     ports:
+       - 8080:8080
+     environment:
+       - JAVA_OPTS:-Djava.awt.headless=true
+     volumes:
+       - /var/jenkins_home
+     networks:
+       vpcbr:
+          ipv4_address: 10.5.0.3
+
+   sonarqube:
+     container_name: sonarqube
+     image: sonarqube
+     ports:
+      - 9000:9000
+     links:
+      - db
+     environment:
+      - SONARQUBE_JDBC_URL=jdbc:postgresql://db:5432/sonar
+     volumes_from:
+      - plugins
+     networks:
+       vpcbr:
+          ipv4_address: 10.5.0.4
+
+   db:
+     container_name: postgres
+     image: postgres
+     volumes_from:
+       - datadb
+     environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=sonar
+     networks:
+       vpcbr:
+          ipv4_address: 10.5.0.5
+
+   datadb:
+     image: postgres
+     container_name: plugins_postgres
+     volumes:
+       - /var/lib/postgresql
+     command: /bin/true
+
+   plugins:
+     container_name: plugins_sonarqube
+     image: sonarqube
+     volumes:
+      - /opt/sonarqube/extensions
+      - /opt/sonarqube/lib/bundled-plugins
+     command: /bin/true
+
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16
+         gateway: 10.5.0.1
