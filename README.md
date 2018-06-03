@@ -89,9 +89,19 @@ Una vez iniciada la sesión, nos pedirá que creemos un token para el acceso an�
 Una vez tengamos el token, crearemos un proyecto en `administration > project > management > create`.
 
 #### Google Developers Console
-// TODO desarrollar
+Debemos crear un proyecto en la [Consola de Desarrolladores de Google](https://console.developers.google.com/) y en el menú de la izquierda, seleccionar **Credenciales**. Desde ahí, iremos a **Crear credenciales > Clave de cuenta de servicio**, donde tendremos que crear una nueva cuenta de servicio con los siguientes valores:
+
+      Nombre de cuenta de servicio: jenkins
+      Función: Proyecto > Propietario
+      ID de cuenta de servicio: El generado
+      Tipo de clave: JSON
+   
+Una vez generada la clave, descargaremos el JSON creado y lo guardaremos para más adelante.
+
 #### Google Play
-// TODO desarrollar
+Debemos crear en Google Play la ficha de la aplicación a publicar, ya que por ahora Jenkins no es capaz de generarla. Una vez hecha, iremos a **Cuenta de desarrollador > Acceso a API** y activaremos el enlace al proyecto de Google Developers Console.
+
+
 ## Jenkins
 Accederemos a través de _/jenkins_. Lo primero que nos pedirá será una clave que se mostró en el log de Docker al crear el contenedor. Podemos volver a verla con el comando:
 
