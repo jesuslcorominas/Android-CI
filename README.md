@@ -229,6 +229,8 @@ Con todo esto, ya tendríamos todo listo para crear nuestra tarea. Para ello, pu
          sonar.tests=      
          # path to Java project compiled classes (optional)      
          sonar.java.binaries=  
+         # comma-separated list of paths to libraries (optional)
+         sonar.java.libraries=
          # Additional parameters
          # eliminamos de codigo duplicado las clases del modelo
          sonar.cpd.exclusions=**/model/*,**/entity/*,**/dto/*
