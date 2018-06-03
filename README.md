@@ -136,7 +136,31 @@ Sin salir todavía de esta página, configuraremos también el servidor SMTP par
 
   `[JENKINS-Awesome-CI] Result of Build 132 Awesome-CI Project: Successful`
 
-* Default Content: Al igual que en el caso anterior, el contenido por defecto del email. Escribiremos también un asunto genérico que nos sirva para todos los projectos. En él, enviaremos el nombre de la tarea, el resultado de la ejecución, un enlace al apk generado y la lista de cambios desde el último commit. Puedes ver el cuerpo del email en el fichero [default_content.txt](https://github.com/jesuslcorominas/Android-CI/blob/master/files/default_content.txt).
+* Default Content: Al igual que en el caso anterior, el contenido por defecto del email. Escribiremos también un asunto genérico que nos sirva para todos los projectos. En él, enviaremos el nombre de la tarea, el resultado de la ejecución, un enlace al apk generado y la lista de cambios desde el último commit:
+
+      <html>      
+      <p>Hello. </p>      
+      <p>This mail is auto-generated as part of the Jenkins execution of the project <b>${JOB_NAME}</b> </p>      
+      <h2> BUILD DETAILS: </h2>      
+      <p>
+         <b>Project Name:</b> ${JOB_NAME} <br>
+         <b>Build URL:</b> ${BUILD_URL} <br>
+         <b>Build Number: </b> ${BUILD_NUMBER} <br>
+         <b>Build Status: </b> ${BUILD_STATUS} <br>
+         <b>Download APK: </b> ${BUILD_URL}lastSuccessfulBuild/artifact/apks/ <br>
+         <b>Log: </b> The log file is attached into this e-mail. <br>
+         <b>Log URL: </b> ${BUILD_URL}${JOB_NAME}/lastBuild/console <br>
+         <b>Changes: </b> ${CHANGES, format="List of changes: 
+         <li>
+            <ul>[%a] %m</ul>
+            <ul>[Date:] %d</ul>
+            <ul>[Revision:] %r</ul>
+         </li> 
+         <br>"} <br>
+      </p>      
+      <p> Thank you & Regards. </p>      
+      </html>
+      
 
 * Default Triggers: Always. Así, siempre que se complete la ejecución, se nos notificará por email.
 
@@ -227,10 +251,10 @@ Con todo esto, ya tendríamos todo listo para crear nuestra tarea. Para ello, pu
          sonar.sources=app/src/main/java, common/src/main/java, data/src/main/java, model/src/main/java      
          # path to test source directories (optional)
          sonar.tests=      
-         # path to Java project compiled classes (optional)      
-         sonar.java.binaries=  
+         # path to Java project compiled classes (required)      
+         sonar.java.binaries=app/build/intermediates/classes/release, common/build/classes, data/build/classes, model/build/classes
          # comma-separated list of paths to libraries (optional)
-         sonar.java.libraries=
+         # sonar.java.libraries=
          # Additional parameters
          # eliminamos de codigo duplicado las clases del modelo
          sonar.cpd.exclusions=**/model/*,**/entity/*,**/dto/*
