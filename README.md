@@ -2,6 +2,13 @@
 # Android-CI
 Guía para montar un entorno de integración continua para Android sobre [Docker](https://www.docker.com/).
 
+## TODO
+* Agregar Appium
+* Actualizar docker-compose a version3
+* Configurar FTP para guardar SNAPSHOT
+* Configurar para que se haga cada vez que haya un push con un hook trigger de github
+* Configurar para que chequee el repositorio cada X tiempo (SCM??)
+
 ## Introducción
 En está guía se dará una explicación práctica para, desde cero, montar un entorno de integración continúa para Android con [Jenkins](https://jenkins.io/). 
 
